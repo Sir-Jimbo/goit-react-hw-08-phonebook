@@ -1,57 +1,62 @@
-import React, { Component } from 'react';
+import React, { Component, Suspense, lazy } from 'react';
+import { Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { CSSTransition } from 'react-transition-group';
+//import { CSSTransition } from 'react-transition-group';
 import Layout from 'components/Layout/Layout';
 import Section from 'components/Section/Section';
-import ContactForm from 'components/ContactForm/ContactForm';
-import Filter from 'components/Filter/Filter';
-import ContactList from 'components/ContactList/ContactList';
-import operations from './redux/phonebook/phonebook-operations';
+import authOperations from './redux/auth/auth-operations';
+import PrivateRoute from './components/PrivateRoute/PrivateRoute';
+import PublicRoute from './components/PublicRoute/PublicRoute';
 import Spinner from './components/Spinner/Spinner';
-import Notification from './components/Notification/Notification';
-import selectors from './redux/phonebook/phonebook-selectors';
-import s from './components/PhoneBook/PhoneBook.module.css';
+//import s from './components/PhoneBook/PhoneBook.module.css';
 
+const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
+const RegisterPage = lazy(() => import('./pages/RegisterPage/RegisterPage'));
+const LoginPage = lazy(() => import('./pages/LoginPage/LoginPage'));
+const PhoneBookPage = lazy(() => import('./pages/PhoneBookPage'));
 class App extends Component {
 
   componentDidMount() {
-    this.props.fetchContacts();
+    this.props.onGetCurrentUser();
   }
 
   render() {
     return (
       <Layout>
         <Section>
-          {this.props.error &&
-            <Notification
-              message={`ERROR: ${this.props.error.message}.`} />}
-          <ContactForm />
-          <Filter />
-          {this.props.isLoadingContacts && <Spinner />}
-          <CSSTransition
-            in={this.props.contacts.length > 0}
-            timeout={250}
-            classNames={s}
-            unmountOnExit
-          >
-            <ContactList />
-          </CSSTransition>
+          <Suspense fallback={<Spinner />}>
+            <Switch>
+              <PublicRoute
+                exact
+                path="/"
+                restricted
+                redirectTo="/contacts"
+                component={HomePage} />
+              <PublicRoute
+                path="/register"
+                restricted
+                redirectTo="/contacts"
+                component={RegisterPage} />
+              <PublicRoute
+                path="/login"
+                restricted
+                redirectTo="/contacts"
+                component={LoginPage} />
+              <PrivateRoute
+                path="/contacts"
+                redirectTo="/login"
+                component={PhoneBookPage}
+              />
+            </Switch>
+          </Suspense>
         </Section>
       </Layout >
     );
   };
 }
 
+const mapDispatchToProps = {
+  onGetCurrentUser: authOperations.getCurrentUser
+}
 
-const mapStateToProps = (state) => ({
-  contacts: selectors.getAllContacts(state),
-  isLoadingContacts: selectors.getLoading(state),
-  error: selectors.getError(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-  fetchContacts: () => dispatch(operations.fetchContacts())
-});
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(null, mapDispatchToProps)(App);

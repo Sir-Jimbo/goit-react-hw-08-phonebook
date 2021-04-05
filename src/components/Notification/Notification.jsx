@@ -2,15 +2,25 @@ import React, { Component } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import * as phonebookActions from '../../redux/phonebook/phonebook-actions';
 import selectors from '../../redux/phonebook/phonebook-selectors';
+import authSelectors from '../../redux/auth/auth-selectors';
+import authActions from '../../redux/auth/auth-actions';
 import { connect } from 'react-redux';
 import s from './Notification.module.css';
 
 class Notification extends Component {
-   componentDidMount() {
-      if (this.props.error) {
+
+   componentDidUpdate() {
+      if (this.props.errorAuth) {
          setTimeout(() => {
-            this.props.clearError();
+            this.props.clearErrorAuth(this.state);
          }, 2500);
+         return;
+      }
+      if (this.props.errorPb) {
+         setTimeout(() => {
+            this.props.clearErrorPb(this.state);
+         }, 2500);
+         return;
       }
    }
 
@@ -32,11 +42,13 @@ class Notification extends Component {
    };
 }
 const mapStateToProps = (state) => ({
-   error: selectors.getError(state),
+   errorPb: selectors.getError(state),
+   errorAuth: authSelectors.getError(state)
 })
 
 const mapDispatchToProps = dispatch => ({
-   clearError: () => dispatch(phonebookActions.clearError())
+   clearErrorPb: () => dispatch(phonebookActions.clearError()),
+   clearErrorAuth: () => dispatch(authActions.clearError())
 });
 
 

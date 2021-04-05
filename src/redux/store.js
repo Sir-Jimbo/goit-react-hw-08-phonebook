@@ -1,20 +1,5 @@
-//redux
-//import { combineReducers } from 'redux'; 
-//import { composeWithDevTools } from 'redux-devtools-extension';
-//import phonebookReducer from '../redux/phonebook/phonebook-reducers';
-
-
-//const rootReducer = combineReducers({ //redux
-//   phonebook: phonebookReducer //redux
-//}) //redux
-
-//const store = createStore(rootReducer, composeWithDevTools()); //redux
-//export default store;
-
-//redux/toolkit with persist
-/*
 import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
+//import logger from 'redux-logger';
 import {
    persistStore,
    persistReducer,
@@ -27,6 +12,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import phonebookReducer from '../redux/phonebook/phonebook-reducers';
+import authReducer from './auth/auth-reducer';
 
 const middleware = [
    ...getDefaultMiddleware({
@@ -34,17 +20,19 @@ const middleware = [
          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
       },
    }),
-   logger];
+   //logger
+];
 
-const phonebookPersistConfig = {
-   key: 'phonebook',
+const authPersistConfig = {
+   key: 'auth',
    storage,
-   blacklist: ['filter']
+   whitelist: ['token']
 };
 
 const store = configureStore({
    reducer: {
-      phonebook: persistReducer(phonebookPersistConfig, phonebookReducer)
+      auth: persistReducer(authPersistConfig, authReducer),
+      phonebook: phonebookReducer
    },
    middleware,
    devTools: process.env.NODE_ENV === 'development',
@@ -53,23 +41,4 @@ const store = configureStore({
 const persistor = persistStore(store);
 
 // eslint-disable-next-line import/no-anonymous-default-export
-export default { store, persistor };*/
-
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
-import logger from 'redux-logger';
-import phonebookReducer from '../redux/phonebook/phonebook-reducers';
-
-const middleware = [
-   ...getDefaultMiddleware(),
-   logger,
-];
-
-const store = configureStore({
-   reducer: {
-      phonebook: phonebookReducer,
-   },
-   middleware,
-   devTools: process.env.NODE_ENV === 'development',
-})
-
-export default store;
+export default { store, persistor };

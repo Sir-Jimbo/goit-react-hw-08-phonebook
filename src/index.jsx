@@ -1,19 +1,22 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-//import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import './index.css';
+import { PersistGate } from 'redux-persist/integration/react';
 import App from './App';
 import store from './redux/store';
-//import { PersistGate } from 'redux-persist/integration/react'
-//import { saveContact, deleteContact } from 'redux/actions';
+import Spinner from './components/Spinner/Spinner';
+import './index.css';
 
-/*comment for persist*/
 ReactDOM.render(
-  <Provider store={store}>
-    {/*<PersistGate loading={null} persistor={store.persistor}>*/}
-    <App />
-    {/*</PersistGate>*/}
-  </Provider>,
+  <Provider store={store.store}>
+    <PersistGate
+      loading={<Spinner />}
+      persistor={store.persistor}>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </PersistGate>
+  </Provider >,
   document.getElementById('root'),
 );

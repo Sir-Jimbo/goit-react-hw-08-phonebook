@@ -37,7 +37,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-   onChangeFilter: e => dispatch(phonebookActions.changeFilter(e.target.value))
+   onChange: e => dispatch(phonebookActions.changeFilter(e.target.value))
 })
 
 

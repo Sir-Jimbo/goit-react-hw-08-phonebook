@@ -24,3 +24,15 @@ img {
 ul {
   padding: 0;
 }
+
+.NavLink {
+  display: inline-block;
+  text-decoration: none;
+  padding: 12px;
+  font-weight: 700;
+  color: #000000;
+}
+
+.NavLink--active {
+  color: red;
+}

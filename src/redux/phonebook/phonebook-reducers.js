@@ -44,10 +44,12 @@ const filter = createReducer(initialState.filter, {
    [changeFilter]: (_, { payload }) => payload,
 });
 
+const setError = (_, { payload }) => payload;
+
 const error = createReducer(initialState.error, {
-   [fetchContactError]: (_, { payload }) => payload,
-   [addContactError]: (_, { payload }) => payload,
-   [deleteContactError]: (_, { payload }) => payload,
+   [fetchContactError]: setError,
+   [addContactError]: setError,
+   [deleteContactError]: setError,
    [clearError]: () => null,
 });
 

@@ -1,21 +1,24 @@
-import Logo from 'components/Logo/Logo';
 import React from 'react';
-import { CSSTransition } from 'react-transition-group';
+
+import { connect } from 'react-redux';
+import Navigation from '../Navigation/Navigation';
+import UserMenu from '../UserMenu/UserMenu';
+import AuthNav from '../AuthNav/AuthNav';
+import authSelectors from '../../redux/auth/auth-selectors';
 import s from './Header.module.css';
 
-const Header = () => {
+const Header = ({ isAuthenticated }) => {
    return (
       <header className={s.container}>
-         <CSSTransition
-            in={true}
-            appear={true}
-            classNames={s}
-            timeout={500}
-            unmountOnExit>
-            <Logo />
-         </CSSTransition>
+
+         <Navigation />
+         {isAuthenticated ? <UserMenu /> : <AuthNav />}
       </header>
    );
 };
 
-export default Header;
+const mapStateToProps = state => ({
+   isAuthenticated: authSelectors.getIsAuthenticated(state),
+});
+
+export default connect(mapStateToProps)(Header);

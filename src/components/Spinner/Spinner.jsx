@@ -3,11 +3,11 @@ import Loader from 'react-loader-spinner';
 
 const Spinner = () => (
    <Loader
-      type="Circles"
-      color="palevioletred"
-      height={260}
-      width={260}
-      timeout={3000}
+      type="TailSpin"
+      color="blue"
+      height={100}
+      width={100}
+      timeout={300}
    />
 );
 
