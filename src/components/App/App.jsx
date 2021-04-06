@@ -4,16 +4,16 @@ import { connect } from 'react-redux';
 //import { CSSTransition } from 'react-transition-group';
 import Layout from 'components/Layout/Layout';
 import Section from 'components/Section/Section';
-import authOperations from './redux/auth/auth-operations';
-import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import PublicRoute from './components/PublicRoute/PublicRoute';
-import Spinner from './components/Spinner/Spinner';
-//import s from './components/PhoneBook/PhoneBook.module.css';
+import authOperations from '../../redux/auth/auth-operations';
+import PrivateRoute from '../PrivateRoute/PrivateRoute';
+import PublicRoute from '../PublicRoute/PublicRoute';
+import Spinner from '../Spinner/Spinner';
+//import s from './App.module.css';
 
-const HomePage = lazy(() => import('./pages/HomePage/HomePage'));
-const RegisterPage = lazy(() => import('./pages/RegisterPage/RegisterPage'));
-const LoginPage = lazy(() => import('./pages/LoginPage/LoginPage'));
-const PhoneBookPage = lazy(() => import('./pages/PhoneBookPage'));
+const HomePage = lazy(() => import('../../pages/HomePage/HomePage'));
+const RegisterPage = lazy(() => import('../../pages/RegisterPage/RegisterPage'));
+const LoginPage = lazy(() => import('../../pages/LoginPage/LoginPage'));
+const PhoneBookPage = lazy(() => import('../../pages/PhoneBookPage'));
 class App extends Component {
 
   componentDidMount() {
